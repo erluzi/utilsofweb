@@ -1,0 +1,27 @@
+extends: eslint:recommended
+# 对es6类型的支持，如Set
+env:
+  browser: true
+  es6: true
+# 解析器
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+# 全局变量声明
+globals:
+  AppConfig: readonly
+# 覆盖 extends: eslint:recommended 中的配置
+rules:
+  no-alert: 2
+  no-console: 1
+  no-unused-vars: 1
+  indent: [2, 2]
+  quotes:
+    - 1
+    - single
+# 定义特定文件的规则
+overrides:
+  - files: ['*-test.js', '*.spec.js']
+    rules:
+      no-unused-vars: 2
+noInlineConfig: true
