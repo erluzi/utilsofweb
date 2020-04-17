@@ -1,25 +1,30 @@
 import path from 'path'
 import typescript from 'rollup-plugin-typescript2'
-// import pkg from './package.json'
-import {terser} from 'rollup-plugin-terser'
+import pkg from './package.json'
+// import {terser} from 'rollup-plugin-terser'
 
 const resolve = p => path.resolve(__dirname, p)
 
 export default {
-  input: 'src/index.ts',
+  input: 'index.ts',
   output: [
     {
-      file: resolve('dist/index.cjs.js'),
-      format: 'cjs'
+      // file: resolve('lib/index.cjs.js'),
+      file: pkg.main,
+      format: 'cjs',
+      sourcemap: false
     },
     {
-      file: resolve('dist/index.esm.js'),
-      format: 'es' // the preferred format
+      // file: resolve('lib/index.esm.js'),
+      file: pkg.module,
+      format: 'es', // the preferred format
+      sourcemap: false
     },
     {
-      file: resolve('dist/index.global.js'),
+      file: resolve('lib/index.global.js'),
       format: 'iife',
-      name: 'UtilsOfWeb' // the global which can be used in browser
+      name: 'UtilsOfWeb', // the global which can be used in browser
+      sourcemap: false
     },
   ],
   external: [
@@ -28,7 +33,8 @@ export default {
   ],
   plugins: [
     typescript({
+      typescript: require('typescript')
     }),
-    terser() // minifies generated bundles
+    // terser() // minifies generated bundles
   ]
 }

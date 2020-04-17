@@ -2,9 +2,16 @@
   "name": "utilsofweb",
   "version": "1.0.0",
   "description": "bit utils of web",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "build": "rollup -c && tsc"
+    "build": "rollup -c",
+    "watch": "rollup -cw"
   },
   "repository": {
     "type": "git",
