@@ -9,23 +9,23 @@ export default {
   input: 'index.ts',
   output: [
     {
-      // file: resolve('lib/index.cjs.js'),
+      // file: resolve('dist/index.cjs.js'),
       file: pkg.main,
       format: 'cjs',
       sourcemap: false
     },
     {
-      // file: resolve('lib/index.esm.js'),
+      // file: resolve('dist/index.esm.js'),
       file: pkg.module,
       format: 'es', // the preferred format
       sourcemap: false
     },
-    {
-      file: resolve('lib/index.global.js'),
-      format: 'iife',
-      name: 'UtilsOfWeb', // the global which can be used in browser
-      sourcemap: false
-    },
+    // {
+    //   file: resolve('dist/index.global.js'),
+    //   format: 'iife',
+    //   name: 'UtilsOfWeb', // the global which can be used in browser
+    //   sourcemap: false
+    // },
   ],
   external: [
     ...Object.keys(pkg.dependencies || {}),
