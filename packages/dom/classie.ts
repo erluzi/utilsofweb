@@ -5,12 +5,13 @@ function classReg(className: string): RegExp {
 // let hasClass = function(elem: HTMLElement, c: string): Boolean
 // let addClass = function(elem: HTMLElement, c: string): void
 // let removeClass = function(elem: HTMLElement, c: string): void
-interface CLassIE {
-  (elem: HTMLElement, c: string): boolean | void
+type ClassIe = (elem: HTMLElement, c: string) => boolean | void
+interface CheckClass {
+  (elem: HTMLElement, c: string): boolean
 }
-let hasClass: CLassIE
-let addClass: CLassIE
-let removeClass: CLassIE
+let hasClass: CheckClass
+let addClass: ClassIe
+let removeClass: ClassIe
 
 if('classList' in document.documentElement) {
   hasClass = (elem: HTMLElement, c: string): boolean => elem.classList.contains(c)

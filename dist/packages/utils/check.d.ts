@@ -1,2 +1,2 @@
-declare function isNode(val: any): Boolean;
+declare function isNode(val: any): boolean;
 export { isNode };
