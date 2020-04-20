@@ -10,7 +10,10 @@ function randomColorOpacity(opacity = 0.5): string {
 }
 
 // 0x112233 => 0001 0001 0010 0010 0011 0011
-
+/**
+ * 色值转换
+ * @param val
+ */
 function hex2rgb(val: string): string {
   let regHex3 = /^#([0-9a-f]{3})$/
   let regHex6 = /^#([0-9a-f]{6})$/
@@ -31,6 +34,10 @@ function hex2rgb(val: string): string {
   }
 }
 
+/**
+ * 色值转换-有少许误差
+ * @param val
+ */
 function rgb2hsl(val: string): string {
   let regRgb = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/
   if(regRgb.test(val)) {
