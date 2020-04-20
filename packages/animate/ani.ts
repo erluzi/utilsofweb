@@ -1,6 +1,6 @@
 import {hex2rgb} from '../logic/logic'
 
-interface AniProps {
+interface AniOptions {
   target: HTMLElement,
   easing?: string,
   duration?: number
@@ -8,6 +8,16 @@ interface AniProps {
   loop?: boolean,
 }
 
+interface AniProps {
+  [propName: string]: string
+}
+
+// use:
+// Ani.initProps('width', 'height')
+// Ani.ani(
+//   {target: Dom.$('.ani')},
+//   {width: '100px'}
+// )
 let Ani = {
   listenerFn: undefined,
   stiff: true,
@@ -33,7 +43,7 @@ let Ani = {
     }
     this.aniProps = aniProps
   },
-  ani(options: AniProps, props: any){
+  ani(options: AniOptions, props: AniProps){
     return new Promise((resolve, reject) => {
       let target = options.target
       let easing = options.easing || 'ease'
@@ -49,18 +59,12 @@ let Ani = {
         resolve()
       }
       target.addEventListener('transitionend', this.listenerFn)
-      // for(let prop of this.aniProps){
-      //     if(options[prop]){
-      //         console.log(`update ${prop}: ${options[prop]}`);
-      //         target.style[prop] = options[prop];
-      //     }
-      // }
       for(let prop of this.aniProps) {
         let aniProp = props[prop]
         if(aniProp){
           if(/^#([0-9a-f]{3})$/.test(aniProp) || /^#([0-9a-f]{6})$/.test(aniProp)){
             if(hex2rgb(aniProp) !== target.style[prop]){
-              console.log(`update colorProp ${prop}: ${aniProp}`)
+              console.log(`update color ${prop}: ${aniProp}`)
               target.style[prop] = aniProp
               this.stiff = false
             }
