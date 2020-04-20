@@ -9,9 +9,9 @@ function eventMixin(Obj: Function) {
   }
 
   Obj.prototype.once = function (type: string, fn: Function, context = this) {
-    function magic() {
+    function magic(...args: any[]) {
       this.off(type, magic)
-      fn.apply(context, arguments)
+      fn.apply(context, args)
     }
     // To expose the corresponding function method in order to execute the off method
     magic.fn = fn
@@ -32,7 +32,7 @@ function eventMixin(Obj: Function) {
     }
   }
 
-  Obj.prototype.trigger = function (type: string) {
+  Obj.prototype.trigger = function (type: string, ...args: any[]) {
     let events = this._events[type]
     if (!events) {
       return
@@ -44,7 +44,7 @@ function eventMixin(Obj: Function) {
       let event = eventsCopy[i]
       let [fn, context] = event
       if (fn) {
-        fn.apply(context, [].slice.call(arguments, 1))
+        fn.apply(context, args)
       }
     }
   }
