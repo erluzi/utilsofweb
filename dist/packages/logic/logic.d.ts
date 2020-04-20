@@ -1,6 +1,14 @@
 declare function randomColor16(): string;
 declare function randomColorOpacity(opacity?: number): string;
+/**
+ * 色值转换
+ * @param val
+ */
 declare function hex2rgb(val: string): string;
+/**
+ * 色值转换-有少许误差
+ * @param val
+ */
 declare function rgb2hsl(val: string): string;
 declare function throttle(handler: Function, duration: number): (...args: any[]) => void;
 declare function debounce(handler: Function, delay: number): (...args: any[]) => void;

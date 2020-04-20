@@ -4,6 +4,7 @@ import Classie from './packages/dom/classie'
 import * as Logic from './packages/logic/logic'
 import Djs from './packages/logic/djs'
 import eventMixin from './packages/event/event'
+import Ani from './packages/animate/ani'
 
 // Logic.Djs = Djs
 
@@ -14,4 +15,5 @@ export {
   Logic, // Utils obj
   Djs, // class
   eventMixin, // function
+  Ani, // Ani obj
 }

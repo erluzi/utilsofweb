@@ -81,6 +81,10 @@ function randomColorOpacity(opacity = 0.5) {
     return `rgba(${r},${g},${b},${opacity})`;
 }
 // 0x112233 => 0001 0001 0010 0010 0011 0011
+/**
+ * 色值转换
+ * @param val
+ */
 function hex2rgb(val) {
     let regHex3 = /^#([0-9a-f]{3})$/;
     let regHex6 = /^#([0-9a-f]{6})$/;
@@ -102,6 +106,10 @@ function hex2rgb(val) {
         throw new Error(`argument ${val} is not a color`);
     }
 }
+/**
+ * 色值转换-有少许误差
+ * @param val
+ */
 function rgb2hsl(val) {
     let regRgb = /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/;
     if (regRgb.test(val)) {
@@ -242,7 +250,167 @@ var logic = /*#__PURE__*/Object.freeze({
   clip2board: clip2board
 });
 
+class Djs {
+    constructor(el, leftMs) {
+        if (!isNode(el))
+            throw TypeError(`argument el => ${el} is not element`);
+        this.el = el;
+        this.leftSecond = Math.floor(leftMs / 1000);
+        this.timer = null;
+    }
+    show(prefix = '倒计时') {
+        this.handle(prefix);
+        this.timer = setInterval(() => this.handle(prefix), 1000);
+    }
+    handle(prefix) {
+        let d, h, m, s;
+        d = Math.floor(this.leftSecond / (24 * 60 * 60));
+        h = Math.floor(this.leftSecond / 3600) % 24;
+        m = Math.floor(this.leftSecond / 60) % 60;
+        s = this.leftSecond % 60;
+        if (this.leftSecond <= 0) {
+            clearInterval(this.timer);
+            this.el.innerHTML = '已结束';
+        }
+        else {
+            if (d > 0) {
+                this.el.innerHTML = `${prefix} ${d}天${h}时${m}分${s}秒`;
+            }
+            else if (h > 0) {
+                this.el.innerHTML = `${prefix} ${h}时${m}分${s}秒`;
+            }
+            else {
+                this.el.innerHTML = `${prefix} ${m}分${s}秒`;
+            }
+            this.leftSecond -= 1;
+        }
+    }
+}
+
+function eventMixin(Obj) {
+    Obj.prototype._events = {};
+    Obj.prototype.on = function (type, fn, context = this) {
+        if (!this._events[type]) {
+            this._events[type] = [];
+        }
+        this._events[type].push([fn, context]);
+    };
+    Obj.prototype.once = function (type, fn, context = this) {
+        function magic(...args) {
+            this.off(type, magic);
+            fn.apply(context, args);
+        }
+        // To expose the corresponding function method in order to execute the off method
+        magic.fn = fn;
+        this.on(type, magic);
+    };
+    Obj.prototype.off = function (type, fn) {
+        let _events = this._events[type];
+        if (!_events) {
+            return;
+        }
+        let count = _events.length;
+        while (count--) {
+            if (_events[count][0] === fn || (_events[count][0] && _events[count][0].fn === fn)) {
+                _events[count][0] = undefined;
+            }
+        }
+    };
+    Obj.prototype.trigger = function (type, ...args) {
+        let events = this._events[type];
+        if (!events) {
+            return;
+        }
+        let len = events.length;
+        let eventsCopy = [...events];
+        for (let i = 0; i < len; i++) {
+            let event = eventsCopy[i];
+            let [fn, context] = event;
+            if (fn) {
+                fn.apply(context, args);
+            }
+        }
+    };
+}
+
+let Ani = {
+    listenerFn: undefined,
+    stiff: true,
+    accept: ['target', 'easing', 'duration', 'delay', 'loop'],
+    aniProps: [],
+    aniPropsAll: [],
+    getPropsAll() {
+        if (this.aniPropsAll.length) {
+            return this.aniPropsAll;
+        }
+        else {
+            return Object.keys(getComputedStyle(document.body)).filter((value, index, array) => {
+                return isNaN(Number(value)) && !value.startsWith('webkit');
+            });
+        }
+    },
+    initProps(...props) {
+        let propsAll = this.getPropsAll();
+        let aniProps = [];
+        for (let prop of props) {
+            if (propsAll.includes(prop)) {
+                aniProps.push(prop);
+            }
+        }
+        this.aniProps = aniProps;
+    },
+    ani(options, props) {
+        return new Promise((resolve, reject) => {
+            let target = options.target;
+            let easing = options.easing || 'ease';
+            let duration = options.duration || 300;
+            let delay = options.delay || 0;
+            let loop = options.loop || false;
+            target.style.transition = `all ${duration}ms ${easing} ${delay}ms`;
+            if (this.listenerFn !== undefined) {
+                target.removeEventListener('transitionend', this.listenerFn);
+            }
+            this.listenerFn = () => {
+                this.stiff = true;
+                resolve();
+            };
+            target.addEventListener('transitionend', this.listenerFn);
+            // for(let prop of this.aniProps){
+            //     if(options[prop]){
+            //         console.log(`update ${prop}: ${options[prop]}`);
+            //         target.style[prop] = options[prop];
+            //     }
+            // }
+            for (let prop of this.aniProps) {
+                let aniProp = props[prop];
+                if (aniProp) {
+                    if (/^#([0-9a-f]{3})$/.test(aniProp) || /^#([0-9a-f]{6})$/.test(aniProp)) {
+                        if (hex2rgb(aniProp) !== target.style[prop]) {
+                            console.log(`update colorProp ${prop}: ${aniProp}`);
+                            target.style[prop] = aniProp;
+                            this.stiff = false;
+                        }
+                    }
+                    else {
+                        if (aniProp !== target.style[prop]) {
+                            console.log(`update ${prop}: ${aniProp}`);
+                            target.style[prop] = aniProp;
+                            this.stiff = false;
+                        }
+                    }
+                }
+            }
+            //未发生动画
+            if (this.stiff)
+                resolve();
+        });
+    }
+};
+
+exports.Ani = Ani;
 exports.Check = check;
 exports.Classie = classie;
+exports.Djs = Djs;
 exports.Dom = dom;
 exports.Logic = logic;
+exports.eventMixin = eventMixin;
