@@ -24,7 +24,7 @@ export {
 //   Dom.classie.{has...}
 //
 //   Logic.Djs
-//   Logic.{randomColor16...}
+//   Logic.{clip2board...}
 //
 //   Event.eventMixin
 //

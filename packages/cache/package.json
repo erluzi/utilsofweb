@@ -1,5 +1,5 @@
 {
-  "name": "cache",
+  "name": "@utilsofweb/cache",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
