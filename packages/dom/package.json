@@ -2,10 +2,12 @@
   "name": "dom",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "module": "dist/dom.es.js",
+  "unpkg": "dis/dom.global.js",
+  "types": "dist/dom.d.ts",
   "files": [
+    "index.js",
     "dist"
   ],
   "scripts": {

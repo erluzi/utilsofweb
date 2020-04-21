@@ -1,11 +1,13 @@
 {
-  "name": "animate",
+  "name": "@utilsofweb/animate",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "module": "dist/animate.es.js",
+  "unpkg": "dis/animate.global.js",
+  "types": "dist/animate.d.ts",
   "files": [
+    "index.js",
     "dist"
   ],
   "scripts": {

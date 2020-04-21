@@ -2,10 +2,12 @@
   "name": "logic",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "module": "dist/logic.es.js",
+  "unpkg": "dis/logic.global.js",
+  "types": "dist/logic.d.ts",
   "files": [
+    "index.js",
     "dist"
   ],
   "scripts": {
