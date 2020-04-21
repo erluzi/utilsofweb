@@ -13,4 +13,4 @@ declare let classie: {
     remove: ClassIe;
     toggle: typeof toggleClass;
 };
-export default classie;
+export { classie };

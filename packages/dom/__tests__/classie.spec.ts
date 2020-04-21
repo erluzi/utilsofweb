@@ -1,4 +1,4 @@
-import classie from '../classie'
+import {classie} from '../src'
 
 describe('dom/classie', () => {
   it('should create a dom add class', () => {

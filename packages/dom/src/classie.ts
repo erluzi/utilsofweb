@@ -2,9 +2,6 @@ function classReg(className: string): RegExp {
   return new RegExp("(^|\\s+)" + className + "(\\s+|$)")
 }
 
-// let hasClass = function(elem: HTMLElement, c: string): Boolean
-// let addClass = function(elem: HTMLElement, c: string): void
-// let removeClass = function(elem: HTMLElement, c: string): void
 type ClassIe = (elem: HTMLElement, c: string) => boolean | void
 interface CheckClass {
   (elem: HTMLElement, c: string): boolean
@@ -47,4 +44,6 @@ let classie = {
   toggle: toggleClass
 }
 
-export default classie
+export {
+  classie
+}

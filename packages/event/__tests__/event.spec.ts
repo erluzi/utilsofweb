@@ -1,4 +1,4 @@
-import eventMixin from '../event'
+import {eventMixin} from '../src'
 
 describe('event/event', () => {
   it('should mixin event works, on', () => {

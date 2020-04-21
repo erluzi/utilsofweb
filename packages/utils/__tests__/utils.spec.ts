@@ -1,4 +1,4 @@
-import {formatNumber} from '../utils'
+import {formatNumber} from '../src'
 
 describe('utils/utils', () => {
   it('should format number works', () => {

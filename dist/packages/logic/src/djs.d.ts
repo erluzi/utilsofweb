@@ -1,4 +1,4 @@
-declare class Djs {
+export declare class Djs {
     el: HTMLElement;
     leftSecond: number;
     timer: any;
@@ -6,4 +6,3 @@ declare class Djs {
     show(prefix?: string): void;
     handle(prefix: string): void;
 }
-export default Djs;

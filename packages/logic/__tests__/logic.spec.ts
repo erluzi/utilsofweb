@@ -1,4 +1,4 @@
-import {debounce} from '../logic'
+import {debounce} from '../src'
 
 describe('logic/logic', () => {
   it('should debounce work right', () => {

@@ -1,11 +1,11 @@
-import {isNode} from '../utils/check'
+import {check} from '../../utils/src'
 
-class Djs {
+export class Djs {
   el: HTMLElement
   leftSecond: number
   timer: any
   constructor(el: HTMLElement, leftMs: number) {
-    if(!isNode(el)) throw TypeError(`argument el => ${el} is not element`)
+    if(!check.isNode(el)) throw TypeError(`argument el => ${el} is not element`)
     this.el = el
     this.leftSecond =  Math.floor(leftMs / 1000)
     this.timer = null
@@ -35,5 +35,3 @@ class Djs {
     }
   }
 }
-
-export default Djs

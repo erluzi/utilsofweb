@@ -1,4 +1,4 @@
-import {hex2rgb} from '../logic/logic'
+import {hex2rgb} from '../../logic/src'
 
 interface AniOptions {
   target: HTMLElement,
@@ -83,4 +83,6 @@ let Ani = {
   }
 };
 
-export default Ani
+export {
+  Ani
+}

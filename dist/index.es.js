@@ -1,31 +1,33 @@
 function isNode(val) {
     return val instanceof HTMLElement || val && val.nodeType === 1;
 }
+let check = {
+    isNode
+};
 
-var check = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  isNode: isNode
-});
-
-// const $ = document.querySelector.bind(document)
-function valid(root) {
-    if (root !== document && !isNode(root)) {
-        console.warn(`argument root => ${root} is not element!`);
-        return false;
+function formatNumber(s) {
+    if (typeof s === 'string')
+        s = parseFloat(s);
+    let str = s.toFixed(2).toString();
+    let newStr = '';
+    let count = 0;
+    let i = str.indexOf('.') - 1;
+    for (; i >= 0; i--) {
+        if (count % 3 === 0 && count !== 0) {
+            newStr = str.charAt(i) + ',' + newStr;
+        }
+        else {
+            newStr = str.charAt(i) + newStr; //逐个字符相接起来
+        }
+        count++;
     }
-    return true;
-}
-function $(selector, root = document) {
-    return valid(root) ? root.querySelector(selector) : null;
-}
-function $$(selector, root = document) {
-    return valid(root) ? root.querySelectorAll(selector) : null;
+    return newStr + (str + '00').substr((str + '00').indexOf('.'), 3);
 }
 
-var dom = /*#__PURE__*/Object.freeze({
+var index = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  $: $,
-  $$: $$
+  check: check,
+  formatNumber: formatNumber
 });
 
 function classReg(className) {
@@ -66,6 +68,65 @@ let classie = {
     remove: removeClass,
     toggle: toggleClass
 };
+
+// const $ = document.querySelector.bind(document)
+function valid(root) {
+    if (root !== document && !check.isNode(root)) {
+        console.warn(`argument root => ${root} is not element!`);
+        return false;
+    }
+    return true;
+}
+function $(selector, root = document) {
+    return valid(root) ? root.querySelector(selector) : null;
+}
+function $$(selector, root = document) {
+    return valid(root) ? root.querySelectorAll(selector) : null;
+}
+
+var index$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  classie: classie,
+  $: $,
+  $$: $$
+});
+
+class Djs {
+    constructor(el, leftMs) {
+        if (!check.isNode(el))
+            throw TypeError(`argument el => ${el} is not element`);
+        this.el = el;
+        this.leftSecond = Math.floor(leftMs / 1000);
+        this.timer = null;
+    }
+    show(prefix = '倒计时') {
+        this.handle(prefix);
+        this.timer = setInterval(() => this.handle(prefix), 1000);
+    }
+    handle(prefix) {
+        let d, h, m, s;
+        d = Math.floor(this.leftSecond / (24 * 60 * 60));
+        h = Math.floor(this.leftSecond / 3600) % 24;
+        m = Math.floor(this.leftSecond / 60) % 60;
+        s = this.leftSecond % 60;
+        if (this.leftSecond <= 0) {
+            clearInterval(this.timer);
+            this.el.innerHTML = '已结束';
+        }
+        else {
+            if (d > 0) {
+                this.el.innerHTML = `${prefix} ${d}天${h}时${m}分${s}秒`;
+            }
+            else if (h > 0) {
+                this.el.innerHTML = `${prefix} ${h}时${m}分${s}秒`;
+            }
+            else {
+                this.el.innerHTML = `${prefix} ${m}分${s}秒`;
+            }
+            this.leftSecond -= 1;
+        }
+    }
+}
 
 function randomColor16() {
     return '#' + Math.floor(Math.random() * 0xffffff).toString(16);
@@ -235,53 +296,17 @@ function _clipboardUseTextArea() {
     return fakeElem;
 }
 
-var logic = /*#__PURE__*/Object.freeze({
+var index$2 = /*#__PURE__*/Object.freeze({
   __proto__: null,
+  Djs: Djs,
   randomColor16: randomColor16,
   randomColorOpacity: randomColorOpacity,
   hex2rgb: hex2rgb,
   rgb2hsl: rgb2hsl,
+  clip2board: clip2board,
   throttle: throttle,
-  debounce: debounce,
-  clip2board: clip2board
+  debounce: debounce
 });
-
-class Djs {
-    constructor(el, leftMs) {
-        if (!isNode(el))
-            throw TypeError(`argument el => ${el} is not element`);
-        this.el = el;
-        this.leftSecond = Math.floor(leftMs / 1000);
-        this.timer = null;
-    }
-    show(prefix = '倒计时') {
-        this.handle(prefix);
-        this.timer = setInterval(() => this.handle(prefix), 1000);
-    }
-    handle(prefix) {
-        let d, h, m, s;
-        d = Math.floor(this.leftSecond / (24 * 60 * 60));
-        h = Math.floor(this.leftSecond / 3600) % 24;
-        m = Math.floor(this.leftSecond / 60) % 60;
-        s = this.leftSecond % 60;
-        if (this.leftSecond <= 0) {
-            clearInterval(this.timer);
-            this.el.innerHTML = '已结束';
-        }
-        else {
-            if (d > 0) {
-                this.el.innerHTML = `${prefix} ${d}天${h}时${m}分${s}秒`;
-            }
-            else if (h > 0) {
-                this.el.innerHTML = `${prefix} ${h}时${m}分${s}秒`;
-            }
-            else {
-                this.el.innerHTML = `${prefix} ${m}分${s}秒`;
-            }
-            this.leftSecond -= 1;
-        }
-    }
-}
 
 function eventMixin(Obj) {
     Obj.prototype._events = {};
@@ -328,6 +353,11 @@ function eventMixin(Obj) {
         }
     };
 }
+
+var index$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  eventMixin: eventMixin
+});
 
 // use:
 // Ani.initProps('width', 'height')
@@ -403,4 +433,9 @@ let Ani = {
     }
 };
 
-export { Ani, check as Check, classie as Classie, Djs, dom as Dom, logic as Logic, eventMixin };
+var index$4 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  Ani: Ani
+});
+
+export { index$4 as Animate, index$1 as Dom, index$3 as Event, index$2 as Logic, index as Utils };

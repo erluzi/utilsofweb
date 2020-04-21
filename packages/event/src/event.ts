@@ -1,4 +1,4 @@
-function eventMixin(Obj: Function) {
+export function eventMixin(Obj: Function) {
   Obj.prototype._events = {};
   Obj.prototype.on = function (type: string, fn: Function, context = this) {
     if (!this._events[type]) {
@@ -49,5 +49,3 @@ function eventMixin(Obj: Function) {
     }
   }
 }
-
-export default eventMixin

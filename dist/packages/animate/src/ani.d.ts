@@ -18,4 +18,4 @@ declare let Ani: {
     initProps(...props: string[]): void;
     ani(options: AniOptions, props: AniProps): Promise<unknown>;
 };
-export default Ani;
+export { Ani };

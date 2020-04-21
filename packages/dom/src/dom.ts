@@ -4,10 +4,10 @@
 // let list = Dom.$('.list')
 // let items = Dom.$$('.item', list)
 
-import {isNode} from '../utils/check'
+import {check} from '../../utils/src'
 
 function valid(root: any): boolean {
-  if (root !== document && !isNode(root)) {
+  if (root !== document && !check.isNode(root)) {
     console.warn(`argument root => ${root} is not element!`)
     return false
   }
