@@ -1,2 +1,2 @@
 export {check} from './check'
-export {formatNumber} from './utils'
+export {numberFormat, dateFormat} from './utils'

@@ -77,7 +77,7 @@ function throttle(handler: Function, duration: number){
   let begin = Date.now()
   let current = null
   return (...args: any[]) => {
-    current = Date.now();
+    current = Date.now()
     if(current - begin > duration){
       handler(...args)
       begin = current
@@ -92,9 +92,7 @@ function debounce(handler: Function, delay: number){
     if(timer){
       clearTimeout(timer)
     }
-    timer = setTimeout(() => {
-      handler(...args)
-    }, delay)
+    timer = setTimeout(handler, delay, ...args)
   }
 }
 
@@ -124,6 +122,8 @@ function clip2board(text: string) {
           succeeded = document.execCommand('Copy')
           if(succeeded){
             resolve()
+            let windowSelection = window.getSelection()
+            windowSelection && windowSelection.removeAllRanges()
           }else{
             reject(notSupportMessage)
           }
