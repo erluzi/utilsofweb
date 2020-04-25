@@ -23,17 +23,12 @@ let Ani = {
   stiff: true,
   accept: ['target', 'easing', 'duration', 'delay', 'loop'],
   aniProps: [],
-  aniPropsAll: [],
-  getPropsAll(){
-    if(this.aniPropsAll.length){
-      return this.aniPropsAll
-    }else{
-      return Object.keys(getComputedStyle(document.body)).filter((value, index, array) => {
-        return isNaN(Number(value)) && !value.startsWith('webkit')
-      })
-    }
+  getPropsAll(): string[]{
+    return Object.keys(getComputedStyle(document.body)).filter(value => {
+      return isNaN(Number(value)) && !value.startsWith('webkit')
+    })
   },
-  initProps(...props: string[]){
+  initProps(...props: string[]): void{
     let propsAll = this.getPropsAll()
     let aniProps = []
     for(let prop of props){
@@ -43,13 +38,12 @@ let Ani = {
     }
     this.aniProps = aniProps
   },
-  ani(options: AniOptions, props: AniProps){
+  ani(options: Partial<AniOptions>, props: AniProps){
     return new Promise((resolve, reject) => {
-      let target = options.target
+      let target = options.target as HTMLElement
       let easing = options.easing || 'ease'
       let duration = options.duration || 300
       let delay = options.delay || 0
-      let loop = options.loop || false
       target.style.transition = `all ${duration}ms ${easing} ${delay}ms`
       if(this.listenerFn !== undefined){
         target.removeEventListener('transitionend', this.listenerFn)

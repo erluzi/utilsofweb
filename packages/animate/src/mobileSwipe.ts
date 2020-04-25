@@ -37,13 +37,13 @@ class MobileSwipe implements Swipe{
   timer: any;
   initPoint: TouchPoint;
   movePoint: TouchPoint;
-  constructor({box = '.swipe-box', duration = 400, loop = true, auto = true, times = 4000}: ParamsMobileSwipe) {
+  constructor({box = '.swipe-box', duration = 400, loop = true, auto = true, times = 4000}: Partial<ParamsMobileSwipe>) {
     this.box = $(box) as HTMLElement
     if (!check.isNode(this.box)) throw Error('未选择正确的dom节点, 参数:box')
     this.items = $$(`${box} > div`) as NodeListOf<HTMLElement>
     if (!(this.items instanceof NodeList)) throw Error(`${box} 无子节点`)
-    if (duration < 0) throw new Error('未设置正确的过度时间, 参数:duration')
-    if (times < 0) throw new Error('未设置正确的播放间隔时间, 参数:times')
+    if (duration < 0) throw Error('未设置正确的过度时间, 参数:duration')
+    if (times < 0) throw Error('未设置正确的播放间隔时间, 参数:times')
     this.width = this.box.clientWidth
     this.activeNum = 0
     this.elLeft = this.items[this.items.length - 1]
@@ -149,7 +149,15 @@ class MobileSwipe implements Swipe{
           isMoveLeft ? this.moveLeft() : this.moveRight()
         }
       }
-    });
+    })
+
+    this.box.addEventListener('mouseenter', e => {
+      this.stopAutoPlay()
+    })
+
+    this.box.addEventListener('mouseleave', e => {
+      this.startAutoPlay()
+    })
 
     for(let item of [...this.items]){
       item.addEventListener('transitionend', () => {
