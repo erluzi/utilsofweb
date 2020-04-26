@@ -1,31 +1,25 @@
-import {$, $$, classie} from '../../dom/src'
+import {$ as $el, $$, classie} from '../../dom/src'
 import {check} from '../../utils/src'
-
-interface TabMoveParams {
-  box: string,
-  height?: number,
-  color?: string
-}
 
 class TabMove {
   tab: HTMLElement;
   items: NodeListOf<HTMLElement>;
   bar!: HTMLElement;
   activeIndex: number;
-  constructor({box = '.tab', height = 3, color = 'orange'}: Partial<TabMoveParams>) {
-    this.tab = $(box) as HTMLElement
+  constructor({box = '.tab'}) {
+    this.tab = $el(box) as HTMLElement
     if (!check.isNode(this.tab)) throw Error('未选择正确的dom节点, 参数:box')
     this.items = $$(`${box} > div`) as NodeListOf<HTMLElement>
     if (!(this.items instanceof NodeList && this.items.length)) throw Error(`${box} 无子节点`)
-    this.activeIndex = 0
-    this.setBarDom(height, color)
+    let activeItem = $el(`${box} > div.active`)
+    this.activeIndex = activeItem ? [...this.items].indexOf(activeItem as HTMLElement) : 0
+    this.setBarDom()
     this.setBarLayout(this.activeIndex)
     this.addEvent()
   }
-  private setBarDom(height: number, color: string):void {
+  private setBarDom():void {
     let el = document.createElement('div')
     el.className = 'tab-bar'
-    el.style.cssText = `height: ${height}px; background-color: ${color};`
     this.tab.appendChild(el)
     this.bar = el
   }

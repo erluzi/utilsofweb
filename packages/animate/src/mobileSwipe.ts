@@ -1,4 +1,4 @@
-import {$, $$, classie} from '../../dom/src'
+import {$ as $el, $$, classie} from '../../dom/src'
 import {check} from '../../utils/src'
 import {throttle} from '../../logic/src'
 
@@ -38,7 +38,7 @@ class MobileSwipe implements Swipe{
   initPoint: TouchPoint;
   movePoint: TouchPoint;
   constructor({box = '.swipe-box', duration = 400, loop = true, auto = true, times = 4000}: Partial<ParamsMobileSwipe>) {
-    this.box = $(box) as HTMLElement
+    this.box = $el(box) as HTMLElement
     if (!check.isNode(this.box)) throw Error('未选择正确的dom节点, 参数:box')
     this.items = $$(`${box} > div`) as NodeListOf<HTMLElement>
     if (!(this.items instanceof NodeList && this.items.length)) throw Error(`${box} 无子节点`)
