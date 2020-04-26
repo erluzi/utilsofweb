@@ -1,13 +1,16 @@
+import {$$} from '../../dom/src'
 import {check} from '../../utils/src'
 
 class Popup {
-  activeEl: HTMLElement | null
-  mask!: HTMLElement
-  constructor({clear = true}) {
+  private activeEl: HTMLElement | null
+  private mask!: HTMLElement
+  constructor({box = '.popup', clear = true}) {
+    let pops = $$(box) as NodeListOf<HTMLElement>
+    pops.forEach(pop => pop.style.transition = 'transform 300ms')
     this.activeEl = null
     this.setMask(clear)
   }
-  setMask(clear:boolean):void {
+  private setMask(clear:boolean):void {
     let el_mask = document.createElement('div')
     el_mask.className = 'mask pop-mask'
     el_mask.style.display = 'none'
@@ -27,6 +30,7 @@ class Popup {
     dom.dataset.isIn = '1'
     let direction = dom.dataset.direction
     if(!direction) dom.dataset.direction = direction = Popup.getDirection(getComputedStyle(dom).transform)
+    this.mask.style.display = 'block'
     switch (direction) {
       case 'top':
       case 'bottom':
@@ -40,7 +44,6 @@ class Popup {
         console.warn('error direction')
     }
     this.activeEl = dom
-    this.mask.style.display = 'block'
   }
   moveOut(el: HTMLElement | string):void {
     let dom = typeof el === 'string' ? document.querySelector(el) as HTMLElement : el
@@ -66,7 +69,7 @@ class Popup {
         console.warn('error direction')
     }
     this.activeEl = null
-    this.mask.style.display = 'none'
+    setTimeout(() => this.mask.style.display = 'none', 200)
   }
   /**
    * ⬆️ matrix(1, 0, 0, 1, 0, -400)

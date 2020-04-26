@@ -50,9 +50,8 @@
 /*popup.ts*/
 .popup{
   position: fixed;
-  transition: transform 300ms;
   background-color: #fff;
-  z-index: 2;
+  z-index: 10;
 }
 .popup-top{
   height: 400px;
@@ -88,6 +87,8 @@
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 10;
   background-color: rgba(0,0,0,.5);
+}
+.popup-mask{
+  z-index: 9;
 }
