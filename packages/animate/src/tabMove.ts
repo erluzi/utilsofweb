@@ -49,7 +49,7 @@ class TabMove {
     // 取消active
     classie.remove(this.items[this.activeIndex], 'active')
     // 设置bar的transition
-    this.bar.className = `${this.bar.className} tab-bar-${this.activeIndex < index ? 'forward' : 'backward'}`
+    classie.add(this.bar, `tab-bar-${this.activeIndex < index ? 'forward' : 'backward'}`)
     // 设置bar的样式
     this.setBarLayout(index)
     this.activeIndex = index
