@@ -16,7 +16,7 @@ class TabMove {
     this.tab = $(box) as HTMLElement
     if (!check.isNode(this.tab)) throw Error('未选择正确的dom节点, 参数:box')
     this.items = $$(`${box} > div`) as NodeListOf<HTMLElement>
-    if (!(this.items instanceof NodeList)) throw Error(`${box} 无子节点`)
+    if (!(this.items instanceof NodeList && this.items.length)) throw Error(`${box} 无子节点`)
     this.activeIndex = 0
     this.setBarDom(height, color)
     this.setBarLayout(this.activeIndex)
