@@ -8,7 +8,8 @@
 - install the dependencies with bundler by running bundle install
 
 ### commands
+- serve your project to localhost:4000
 ```
-serve your project to localhost:4000
+bundle install
 bundle exec jekyll serve
 ```
