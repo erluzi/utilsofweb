@@ -1,4 +1,4 @@
-### for ruby; 类比
+## for ruby; 类比
 - Gemfiles => package.json
 - Bundler => npm
 
@@ -13,3 +13,6 @@
 bundle install
 bundle exec jekyll serve
 ```
+
+# use docsify
+> [docsify quickstart](https://docsify.js.org/#/quickstart)
