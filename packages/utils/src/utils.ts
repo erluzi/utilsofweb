@@ -76,6 +76,10 @@ function detectIE(userAgent: string | undefined): number | boolean {
   return false
 }
 
+/**
+ * 解析URL
+ * @param url
+ */
 function parseURL(url: string): CustomUrl {
   // if (typeof url !== 'string') throw Error('params url mast be type: string')
   let a = document.createElement('a')

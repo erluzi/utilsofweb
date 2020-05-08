@@ -1,29 +1,33 @@
-const _fakePromise = {
-  then: () => _fakePromise,
-  catch: (cb: Function) => {
-    cb && cb()
-  }
-}
-
 interface Lock {
   lock(name: string, some: any): any,
   unlock(name: string): void
 }
 
+// todo set to LockUtil, but it will not works, it is a bug?
+const _locked = new Set()
 class LockUtil implements Lock{
-  private locked: string[]
-  constructor(locked: string[] = []) {
-    this.locked = locked
+  private readonly _fakePromise: object
+  constructor() {
+    this._fakePromise = {
+      then: () => this._fakePromise,
+      catch: (cb: Function) => {
+        cb && cb()
+      }
+    }
   }
   lock(name: string, some: any): any {
-    if (this.locked.indexOf(name) !== -1) {
-      console.warn(`${some} is locked`)
-      return _fakePromise
+    if (_locked.has(name)) {
+      console.warn(`${name} is locked`)
+      return this._fakePromise
     }
-    this.locked.push(name)
-    return (typeof some === 'function' ? some() : some)
+    _locked.add(name)
+    return typeof some === 'function' ? some() : some
   }
   unlock(name: string): void {
-    this.locked = this.locked.filter(n => n !== name)
+    _locked.delete(name)
   }
+}
+
+export {
+  LockUtil
 }
