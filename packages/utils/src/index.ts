@@ -1,2 +1,2 @@
 export {check} from './check'
-export {numberFormat, dateFormat} from './utils'
+export {numberFormat, dateFormat, detectIE, parseURL} from './utils'

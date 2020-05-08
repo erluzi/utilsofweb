@@ -2,7 +2,7 @@ import {eventMixin} from '../src'
 
 describe('event/event', () => {
   it('should mixin event works, on', () => {
-    class TestObj{}
+    class TestObj {}
     eventMixin(TestObj)
     let obj = new TestObj()
     const mockFn = jest.fn(x => x)
@@ -18,7 +18,7 @@ describe('event/event', () => {
   })
 
   it('should mixin event works, once', () => {
-    class TestObj{}
+    class TestObj {}
     eventMixin(TestObj)
     let obj = new TestObj()
     const mockFn = jest.fn(x => x)
@@ -31,7 +31,7 @@ describe('event/event', () => {
   })
 
   it('should mixin event works, off', () => {
-    class TestObj{}
+    class TestObj {}
     eventMixin(TestObj)
     let obj = new TestObj()
     const mockFn = jest.fn(x => x)
