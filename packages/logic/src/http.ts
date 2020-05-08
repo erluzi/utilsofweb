@@ -1,4 +1,4 @@
-import {LockUtil} from '../../utils/src'
+import {Lock} from '../../utils/src'
 
 interface Apis {
   [index: string]: any
@@ -8,6 +8,8 @@ function generateFetch(initApis: Apis = {}, initConfig: any = {}, handler: Funct
   let apis: Apis = initApis
   let initData = initConfig.datas || {}
   let initHeaders = initConfig.headers || {}
+  let apiLock = new Lock()
+
   function fetchData (apiName: string, data: object) {
     let [url, method, domain] = apis[apiName]
     if (!url) throw Error(`${apiName} is undefined`)
@@ -30,7 +32,7 @@ function generateFetch(initApis: Apis = {}, initConfig: any = {}, handler: Funct
       }
       request.body = formData
     }
-    let apiLock = new LockUtil()
+
     let fn = () => new Promise((resolve, reject) => {
       fetch(domain ? domain + url : url, request).then(res => {
         if (res.ok) {
@@ -55,13 +57,16 @@ function generateFetch(initApis: Apis = {}, initConfig: any = {}, handler: Funct
     })
     return apiLock.lock(channel, fn)
   }
+
   fetchData.addApi = (moreApis: Apis): void => {
     apis = Object.assign({}, apis, moreApis)
   }
-  fetchData.updateInitConfig = (updateInitConfig: any) => {
-    initData = updateInitConfig.initData
-    initHeaders = updateInitConfig.initHeaders
+
+  fetchData.updateInitConfig = (updatedConfig: any = {}) => {
+    initData = updatedConfig.initData || {}
+    initHeaders = updatedConfig.initHeaders || {}
   }
+
   return fetchData
 }
 
