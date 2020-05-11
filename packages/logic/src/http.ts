@@ -1,31 +1,32 @@
 import {Lock} from '../../utils/src'
+import qs from 'qs'
 
 interface Apis {
   [index: string]: Array<any>
 }
 
 interface Configs {
-  datas: Record<string, any>,
-  headers: Record<string, string>
+  data: Record<string, any>,
+  header: Record<string, string>
 }
 
 function generateFetch(initApis: Apis = {}, initConfig: Configs, handler: Function): Function {
   let apis: Apis = initApis
-  let initData = initConfig.datas || {}
-  let initHeaders = initConfig.headers || {}
+  let initData = initConfig.data || {}
+  let initHeader = initConfig.header || {}
   let apiLock = new Lock()
 
-  function fetchData (apiName: string, data: object) {
+  function fetchData (apiName: string, data: object = {}, header: object = {}) {
     let [url, method, domain] = apis[apiName]
     if (!url) throw Error(`${apiName} is undefined`)
     const dataSend = Object.assign(initData, data)
     const request: RequestInit = {
-      body: JSON.stringify(dataSend),
+      body: qs.stringify(dataSend),
       method,
       mode: 'cors',
       headers: Object.assign({
         'Content-Type': 'application/json'
-      }, initHeaders)
+      }, initHeader, header)
     }
     const channel = `${url}_${JSON.stringify(dataSend)}`
     // @ts-ignore
@@ -66,9 +67,9 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler: Functi
     apis = Object.assign({}, apis, moreApis)
   }
 
-  fetchData.updateInitConfig = (updatedConfig: any = {}) => {
-    initData = updatedConfig.initData || {}
-    initHeaders = updatedConfig.initHeaders || {}
+  fetchData.updateInitConfig = (updatedConfig: Configs) => {
+    initData = updatedConfig.data || {}
+    initHeader = updatedConfig.header || {}
   }
 
   return fetchData
