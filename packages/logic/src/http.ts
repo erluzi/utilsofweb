@@ -1,10 +1,15 @@
 import {Lock} from '../../utils/src'
 
 interface Apis {
-  [index: string]: any
+  [index: string]: Array<any>
 }
 
-function generateFetch(initApis: Apis = {}, initConfig: any = {}, handler: Function): Function {
+interface Configs {
+  datas: Record<string, any>,
+  headers: Record<string, string>
+}
+
+function generateFetch(initApis: Apis = {}, initConfig: Configs, handler: Function): Function {
   let apis: Apis = initApis
   let initData = initConfig.datas || {}
   let initHeaders = initConfig.headers || {}
@@ -23,7 +28,6 @@ function generateFetch(initApis: Apis = {}, initConfig: any = {}, handler: Funct
       }, initHeaders)
     }
     const channel = `${url}_${JSON.stringify(dataSend)}`
-    // todo use FormData
     // @ts-ignore
     if (request.headers['Content-Type'] === 'multipart/form-data') {
       let formData = new FormData()
@@ -52,7 +56,7 @@ function generateFetch(initApis: Apis = {}, initConfig: any = {}, handler: Funct
       }).catch(err => {
         reject(err)
       }).finally(() => {
-        setTimeout(apiLock.unlock.bind(apiLock), 1000, channel)
+        setTimeout(apiLock.unlock.bind(apiLock), 500, channel)
       })
     })
     return apiLock.lock(channel, fn)
