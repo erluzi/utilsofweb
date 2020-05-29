@@ -19,13 +19,15 @@ export class PageManager {
   pages: Array<Page>
   defaultPage: Page | null
   pageIndex: number
-  constructor(){
+
+  constructor() {
     this.container = $('.spa') as HTMLElement
     this.pageStack = []
     this.pages = []
     this.defaultPage = null
     this.pageIndex = 1
   }
+
   setPages() {
     let tpls = $$('template')
     if (tpls) {
@@ -41,19 +43,21 @@ export class PageManager {
     }
     return this
   }
+
   setDefault(defaultPage: string) {
     this.defaultPage = this._find('name', defaultPage)
     return this
   }
+
   init() {
     window.addEventListener('hashchange', () => {
       let state = history.state || {}
       let url = location.hash.indexOf('#') === 0 ? location.hash : '#'
       let page = this._find('url', url) || this.defaultPage
       if (state.pageIndex <= this.pageIndex || this._findInStack(url)) {
-        if(page) this._back(page)
+        if (page) this._back(page)
       } else {
-        if(page) this._go(page)
+        if (page) this._go(page)
       }
     })
     if (history.state && history.state.pageIndex) {
@@ -62,17 +66,20 @@ export class PageManager {
     this.pageIndex--
     let url = location.hash.indexOf('#') === 0 ? location.hash : '#'
     let page = this._find('url', url) || this.defaultPage
-    if(page) this._go(page)
+    if (page) this._go(page)
     return this
   }
+
   push(config: Page) {
     this.pages.push(config)
     return this
   }
+
   go(to: string) {
     let config = this._find('name', to)
     if (config) location.hash = config.url
   }
+
   _go(config: Page) {
     this.pageIndex++
     history.replaceState && history.replaceState({pageIndex: this.pageIndex}, '', location.href)
@@ -95,6 +102,7 @@ export class PageManager {
     }
     return this
   }
+
   _back(config: Page) {
     this.pageIndex--
     let stack = this.pageStack.pop() as PageStack
@@ -122,18 +130,21 @@ export class PageManager {
     classie.add(stack.dom, 'slideOut')
     return this
   }
+
   _findInStack(url: string) {
     for (let stack of this.pageStack) {
       if (stack.config.url === url) return stack
     }
     return null
   }
+
   _find(key: keyof Page, value: string): Page | null {
     for (let page of this.pages) {
       if (page[key] === value) return page
     }
     return null
   }
+
   // 绑事件 todo
   _bind(page: Page) {
     let events = page.events || {}
