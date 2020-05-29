@@ -52,7 +52,7 @@ export class PageManager {
   init() {
     window.addEventListener('hashchange', () => {
       let state = history.state || {}
-      let url = location.hash.indexOf('#') === 0 ? location.hash : '#'
+      let url = this._getUrl()
       let page = this._find('url', url) || this.defaultPage
       if (state.pageIndex <= this.pageIndex || this._findInStack(url)) {
         if (page) this._back(page)
@@ -64,7 +64,7 @@ export class PageManager {
       this.pageIndex = history.state.pageIndex
     }
     this.pageIndex--
-    let url = location.hash.indexOf('#') === 0 ? location.hash : '#'
+    let url = this._getUrl()
     let page = this._find('url', url) || this.defaultPage
     if (page) this._go(page)
     return this
@@ -107,7 +107,7 @@ export class PageManager {
     this.pageIndex--
     let stack = this.pageStack.pop() as PageStack
     if (!stack) return
-    let url = location.hash.indexOf('#') === 0 ? location.hash : '#'
+    let url = this._getUrl()
     let found = this._findInStack(url)
     if (!found) { // page没有缓存的话执行插入
       let template = $(config.template) as HTMLTemplateElement // 使用template api
@@ -143,6 +143,11 @@ export class PageManager {
       if (page[key] === value) return page
     }
     return null
+  }
+
+  _getUrl(): string {
+    // location.hash.indexOf('#') === 0 ? location.hash : '#'
+    return /^#[A-Za-z0-9_\-]+/.test(location.hash) ? location.hash : '#'
   }
 
   // 绑事件 todo
