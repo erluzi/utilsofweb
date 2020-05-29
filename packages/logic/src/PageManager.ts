@@ -44,7 +44,7 @@ export class PageManager {
     return this
   }
 
-  setDefault(defaultPage: string) {
+  setDefaultPage(defaultPage: string) {
     this.defaultPage = this._find('name', defaultPage)
     return this
   }
@@ -70,7 +70,7 @@ export class PageManager {
     return this
   }
 
-  push(config: Page) {
+  pushPage(config: Page) {
     this.pages.push(config)
     return this
   }
