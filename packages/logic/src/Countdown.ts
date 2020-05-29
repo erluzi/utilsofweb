@@ -1,6 +1,6 @@
 import {check} from '../../utils/src'
 
-export class Djs {
+export class Countdown {
   el: HTMLElement
   leftSecond: number
   timer: any
