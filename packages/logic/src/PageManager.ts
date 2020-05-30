@@ -29,7 +29,7 @@ export class PageManager {
   }
 
   setPages() {
-    let tpls = $$('template')
+    let tpls = $$('template[id^="tpl_"]')
     if (tpls) {
       let i = 0, l = tpls.length, name = ''
       for (; i < l; ++i) {
