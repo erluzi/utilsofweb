@@ -28,7 +28,7 @@ export class PageManager {
     this.pageIndex = 1
   }
 
-  setPages() {
+  setPages(events: Record<string, Record<string, any>> = {}) {
     let tpls = $$('template[id^="tpl_"]')
     if (tpls) {
       let i = 0, l = tpls.length, name = ''
@@ -38,6 +38,7 @@ export class PageManager {
           name,
           url: '#' + (name === 'home' ? '' : name), // 首页无hash
           template: '#' + tpls[i].id,
+          events: events[name]
         })
       }
     }
@@ -97,9 +98,10 @@ export class PageManager {
       config: config,
       dom: clone,
     })
-    if (!config.isBind) {
-      this._bind(config)
-    }
+    // if (!config.isBind) {
+    //   this._bind(config)
+    // }
+    this._bind(config)
     return this
   }
 
@@ -150,13 +152,21 @@ export class PageManager {
     return /^#[A-Za-z0-9_\-]+/.test(location.hash) ? location.hash : '#'
   }
 
-  // 绑事件 todo
+  // 绑事件
   _bind(page: Page) {
     let events = page.events || {}
-    for (let e in events) {
-      for (let type in events[e]) {
-        this.container.addEventListener(type, events[e][type])
-        // this.container.on(type, t, events[t][type])
+    for (let selector in events) {
+      let elems = $$(selector)
+      for (let type in events[selector]) {
+        let eventHandlers = events[selector][type]
+        if (elems) {
+          for (let elem of [...elems]) { // bind begin
+            // todo check type
+            elem.addEventListener(type, ev => {
+              eventHandlers.trigger(type, ev)
+            })
+          }
+        }
       }
     }
     page.isBind = true
