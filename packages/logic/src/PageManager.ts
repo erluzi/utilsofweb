@@ -1,5 +1,21 @@
 import {classie, $, $$} from '../../dom/src'
 
+const types_animation = ['animationstart', 'animationend', 'animationiteration']
+const types_transition = ['transitionstart', 'transitioncancel', 'transitionend', 'transitionrun']
+const types_form = ['reset', 'submit']
+const types_views = ['fullscreenchange', 'fullscreenerror', 'resize', 'scroll']
+const types_mouse = ['click', 'dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseover', 'mouseout', 'mouseup',
+  'pointerlockchange', 'pointerlockerror', 'select', 'wheel']
+const types_drag = ['drag', 'dragend', 'dragenter', 'dragstart', 'dragleave', 'dragover', 'drop']
+const types = [
+  ...types_animation,
+  ...types_transition,
+  ...types_form,
+  ...types_views,
+  ...types_mouse,
+  ...types_drag,
+]
+
 interface Page {
   name: string,
   url: string,
@@ -159,12 +175,16 @@ export class PageManager {
       let elems = $$(selector)
       for (let type in events[selector]) {
         let eventHandlers = events[selector][type]
+        let isEventType = types.indexOf(type) !== -1
         if (elems) {
           for (let elem of [...elems]) { // bind begin
-            // todo check type
-            elem.addEventListener(type, ev => {
-              eventHandlers.trigger(type, ev)
-            })
+            if (isEventType) {
+              elem.addEventListener(type, ev => {
+                eventHandlers.trigger(selector + '-' + type, ev)
+              })
+            } else {
+              eventHandlers.trigger(selector + '-' + type, elem)
+            }
           }
         }
       }
