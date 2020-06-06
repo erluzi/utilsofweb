@@ -168,6 +168,11 @@ export class PageManager {
     return /^#[A-Za-z0-9_\-]+/.test(location.hash) ? location.hash : '#'
   }
 
+  // todo
+  // addEvents(name: string) {
+  //   let page: Page | null = this._find('name', name)
+  // }
+
   // 绑事件
   _bind(page: Page) {
     let events = page.events || {}
