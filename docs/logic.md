@@ -18,7 +18,7 @@
 ```javascript
 let pm = new Logic.PageManager()
 let events = {
-  [name]: {
+  [pagename]: {
     [selector]: {
       click: eventMixinInstance, // 点击
       immediate: eventMixinInstance, // 立即执行
