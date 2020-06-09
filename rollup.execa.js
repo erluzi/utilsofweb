@@ -1,6 +1,7 @@
 import path from 'path'
 import typescript from 'rollup-plugin-typescript2'
 // import {terser} from 'rollup-plugin-terser'
+// import babel from 'rollup-plugin-babel'
 
 const packagesDir = path.resolve(__dirname, 'packages')
 const packageDir = path.resolve(packagesDir, process.env.TARGET)
@@ -8,6 +9,16 @@ const name = path.basename(packageDir)
 const resolve = p => path.resolve(packageDir, p)
 const pkg = require(resolve(`package.json`))
 const ShouldGenerateSourceMap = false
+
+// 根据lib类型动态加载打包插件
+let dynamicPlugin = []
+// if (name === 'litcomp') {
+//   dynamicPlugin.push(
+//     babel({
+//       exclude: 'node_modules/**'
+//     })
+//   )
+// }
 
 export default {
   input: resolve('src/index.ts'),
@@ -47,5 +58,6 @@ export default {
       }
     }),
     // terser() // minifies generated bundles
+    [...dynamicPlugin]
   ]
 }
