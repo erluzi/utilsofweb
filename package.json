@@ -16,6 +16,7 @@
   "scripts": {
     "build": "rollup -c",
     "build:all": "node scripts/build.js",
+    "build:litcomp": "node scripts/buildLitcomp.js",
     "test": "jest --no-cache",
     "js": "node scripts/utils.js"
   },

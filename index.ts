@@ -3,8 +3,7 @@ import * as Dom from './packages/dom/src'
 import * as Logic from './packages/logic/src'
 import * as Event from './packages/event/src'
 import * as Animate from './packages/animate/src'
-
-// Logic.Djs = Djs
+import * as Litcomp from './packages/litcomp/src'
 
 export {
   Utils,
@@ -12,21 +11,5 @@ export {
   Logic,
   Event,
   Animate,
+  Litcomp
 }
-
-// to use:
-// {
-//   Utils.check.{isNode...}
-//   Utils.{formatNumber...}
-//
-//   Dom.$
-//   Dom.$$
-//   Dom.classie.{has...}
-//
-//   Logic.Djs
-//   Logic.{clip2board...}
-//
-//   Event.eventMixin
-//
-//   Animate.Ani
-// }

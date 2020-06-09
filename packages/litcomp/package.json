@@ -16,10 +16,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "private": false,
+  "private": true,
   "peerDependencies": {
+    "lit-element": "^2.3.1"
   },
   "dependencies": {
-    "lit-element": "^2.3.1"
   }
 }

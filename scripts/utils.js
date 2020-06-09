@@ -11,6 +11,6 @@ let targets = fs.readdirSync('packages').filter(f => {
   // return true
 })
 
-console.log(targets)
+console.log('targets: ', targets)
 
 exports.targets = targets
