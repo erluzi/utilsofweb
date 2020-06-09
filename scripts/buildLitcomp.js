@@ -8,7 +8,8 @@ async function build_litcomp() {
   const target = 'litcomp'
   let components = fs.readdirSync('packages/litcomp/Components')
   console.log('components: ', components)
-  await fs.remove(path.resolve('dist/litcomp'))
+  let libDir = path.resolve('packages/litcomp/lib')
+  await fs.remove(libDir)
   for(const component of components) {
     await execa(
       'rollup',
