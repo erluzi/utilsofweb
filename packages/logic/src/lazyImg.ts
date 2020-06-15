@@ -1,9 +1,8 @@
 import {$$, classie} from '../../dom/src'
 
-let LazyImg = {
+let lazyImg = {
   imgs: [],
   unLoad: [],
-  loadAll: false,
   timer: null,
   init(selector = '.lazy') {
     this.imgs = [...$$(selector) as NodeList]
@@ -17,6 +16,9 @@ let LazyImg = {
     }
   },
   onScroll() {
+    if (this.imgs.length === 0) {
+      return console.log('lazy img all loaded!')
+    }
     this.imgs = this.imgs.filter((img: HTMLImageElement) => {
       let imgClientRect = img.getBoundingClientRect()
       if (img.dataset.src && imgClientRect.top < window.innerHeight) {
@@ -30,8 +32,7 @@ let LazyImg = {
       return true
     })
     //延迟加载屏幕以上的
-    if (!this.loadAll) {
-      this.loadAll = true
+    if (this.unLoad.length) {
       if (this.timer) {
         clearTimeout(this.timer)
       }
@@ -48,5 +49,5 @@ let LazyImg = {
 }
 
 export {
-  LazyImg,
+  lazyImg,
 }
