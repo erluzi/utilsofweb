@@ -30,7 +30,7 @@ pm.setPages(events).setDefaultPage('home').init()
 ```
 
 - http
-```javascript
+```ecmascript 6
 import {Logic} from 'utilsofweb'
 import apis from './apis.js'
 
@@ -54,7 +54,7 @@ cFetch('getSensitiveWords', {page: 1}).then(res => {
 
 - lazyImg
 > js
-```javascript
+```ecmascript 6
 import {Logic} from 'utilsofweb'
 
 Logic.lazyImg.init()
