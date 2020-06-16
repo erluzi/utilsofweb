@@ -59,9 +59,9 @@ cFetch('getSensitiveWords', {page: 1}).then(res => {
 - lazyImg
 > 图片准备
 ```
-- assets
-    - loading.png (作为懒加载图片背景)
-    - tm.png (作为懒加载图片src)
+assets
+  loading.png (作为懒加载图片背景)
+  tm.png (作为懒加载图片src)
 ```
 
 > html
