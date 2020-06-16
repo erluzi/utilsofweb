@@ -33,7 +33,6 @@ pm.setPages(events).setDefaultPage('home').init()
 ```ecmascript 6
 import {Logic} from 'utilsofweb'
 import apis from './apis.js'
-
 let initConfig = {
   data: {
     from: 'js'
@@ -42,9 +41,7 @@ let initConfig = {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
 }
-
 let cFetch = Logic.generateFetch(apis, initConfig)
-
 cFetch('getSensitiveWords', {page: 1}).then(res => {
   console.log('res: ', res)
 }).catch(err => {
@@ -56,10 +53,8 @@ cFetch('getSensitiveWords', {page: 1}).then(res => {
 > js
 ```ecmascript 6
 import {Logic} from 'utilsofweb'
-
 Logic.lazyImg.init()
 Logic.lazyImg.onScroll()
-
 function scrollHandler() {
   if (Logic.lazyImg.imgs.length === 0) {
     window.removeEventListener('scroll', onScroll)
@@ -68,7 +63,6 @@ function scrollHandler() {
 }
 
 let onScroll = Logic.throttle(scrollHandler, 100)
-
 window.addEventListener('scroll', onScroll)
 ```
 
