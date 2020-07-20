@@ -16,3 +16,5 @@ class Message extends LitElement{
     return html`<p class=${classMap(this.classes)}><slot></slot></p>`
   }
 }
+
+export default Message
