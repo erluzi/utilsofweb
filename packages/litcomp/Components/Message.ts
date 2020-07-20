@@ -17,4 +17,3 @@ class Message extends LitElement{
   }
 }
 
-export default Message

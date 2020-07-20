@@ -4,13 +4,22 @@ import {LitElement, html, customElement, property} from 'lit-element'
 class VideoControls extends LitElement{
   constructor() {
     super()
-    // get video and set
   }
 
   @property()
   video: HTMLVideoElement | undefined
 
+  @property()
+  icons: Record<string, any> = {
+    mute: true,
+    fullPage: true,
+    fullScreen: true,
+    pip: this.hasAttribute('pip'),
+    subtitle: this.hasAttribute('subtitle'),
+  }
+
   connectedCallback() {
+    super.connectedCallback()
     if (this.parentNode) {
       this.video = this.parentNode.querySelector('video.c-v') as HTMLVideoElement
     }
@@ -22,6 +31,27 @@ class VideoControls extends LitElement{
       this.video.muted = !this.video.muted
     }
   }
+  handleFullPage() {
+
+  }
+  handleFullscreen() {
+
+  }
+  async handlePip() {
+    try {
+      // @ts-ignore
+      if (this.video !== document.pictureInPictureElement) {
+        // @ts-ignore
+        await this.video.requestPictureInPicture()
+      } else {
+        // @ts-ignore
+        await document.exitPictureInPicture()
+      }
+    } catch (e) {
+      console.warn(e.message)
+    }
+  }
+  handleSubtitle() {}
 
   render() {
     return html`
@@ -31,10 +61,10 @@ class VideoControls extends LitElement{
           <div class="time"></div>
           <div class="icons">
             <button class="mute" @click="${this.handleMute}">静音</button>
-            <button class="full-page">网页全屏</button>
-            <button class="full-screen">全屏</button>
-            <button class="pip">画中画</button>
-            <button class="vtt">字幕</button>
+            <button class="full-page" @click="${this.handleFullPage}">网页全屏</button>
+            <button class="full-screen" @click="${this.handleFullscreen}">全屏</button>
+            ${this.icons.pip ? html`<button class="pip" @click="${this.handlePip}">画中画</button>` : ''}
+            ${this.icons.subtitle ? html`<button class="subtitle" @click="${this.handleSubtitle}">字幕</button>` : ''}
           </div>
         </div>
       </div>
@@ -42,4 +72,3 @@ class VideoControls extends LitElement{
   }
 }
 
-export default VideoControls
