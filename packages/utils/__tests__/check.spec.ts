@@ -13,6 +13,7 @@ describe('utils/check', () => {
       'ifat3_-.@42du.cn',
     ]
     let notEmails = [
+      'cn@163.com',
       'fat3@42du.online',
       '贰撸子@42du.cn',
     ]
