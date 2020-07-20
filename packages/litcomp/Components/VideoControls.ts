@@ -7,6 +7,9 @@ class VideoControls extends LitElement{
   }
 
   @property()
+  box: HTMLElement | undefined
+
+  @property()
   video: HTMLVideoElement | undefined
 
   @property()
@@ -21,12 +24,12 @@ class VideoControls extends LitElement{
   connectedCallback() {
     super.connectedCallback()
     if (this.parentNode) {
+      this.box = this.parentNode as HTMLElement
       this.video = this.parentNode.querySelector('video.c-v') as HTMLVideoElement
     }
   }
 
   handleMute() {
-    console.log('handle mute')
     if (this.video) {
       this.video.muted = !this.video.muted
     }
@@ -34,8 +37,16 @@ class VideoControls extends LitElement{
   handleFullPage() {
 
   }
-  handleFullscreen() {
-
+  async handleFullscreen() {
+    let element = this.box as HTMLElement
+    let fullscreenOptions: FullscreenOptions = {
+      navigationUI: 'show'
+    }
+    try {
+      await element.requestFullscreen(fullscreenOptions)
+    } catch (err) {
+      console.warn(err.message)
+    }
   }
   async handlePip() {
     try {
