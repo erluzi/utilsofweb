@@ -15,7 +15,6 @@ const fnMap = [
     'webkitFullscreenEnabled',
     'webkitfullscreenchange',
     'webkitfullscreenerror'
-
   ],
   // Old WebKit
   [
@@ -25,7 +24,6 @@ const fnMap = [
     'webkitCancelFullScreen',
     'webkitfullscreenchange',
     'webkitfullscreenerror'
-
   ],
   [
     'mozRequestFullScreen',
@@ -45,8 +43,10 @@ const fnMap = [
   ]
 ]
 
-const fn: Record<string, string> = (() => {
-  let re: Record<string, string> = {}
+type MapKeys = Record<string, string>
+
+const fn: MapKeys = (() => {
+  let re: MapKeys = {}
   for (let m of fnMap) {
     if (m[1] in document) {
       let i = 0, l = m.length

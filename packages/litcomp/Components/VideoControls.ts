@@ -1,5 +1,6 @@
 import {LitElement, html, customElement, property} from 'lit-element'
-import {screenfull} from '../shared/utils'
+// import { classMap } from 'lit-html/directives/class-map'
+import {screenfull, pagefull, videopip} from '../shared/utils'
 
 @customElement('c-v-controls')
 class VideoControls extends LitElement{
@@ -14,13 +15,16 @@ class VideoControls extends LitElement{
   video: HTMLVideoElement | undefined
 
   @property()
-  muted: boolean | undefined
+  muted: boolean = true
 
   @property()
   isFullPage: boolean = false
 
   @property()
   isFullscreen: boolean = false
+
+  @property()
+  isPip: boolean = false
 
   @property()
   icons: Record<string, boolean> = {
@@ -44,10 +48,17 @@ class VideoControls extends LitElement{
   initEvents() {
     screenfull.onchange(() => {
       this.isFullscreen = screenfull.isFullscreen()
-      console.log('onchange', this.isFullscreen)
     })
     screenfull.onerror(() => {
-      console.log('onerror', this.isFullscreen)
+      console.warn('onerror', this.isFullscreen)
+    })
+
+    videopip.onchange(this.video as HTMLVideoElement,() => {
+      this.isPip = videopip.isVideoPip(this.video as HTMLVideoElement)
+    })
+
+    pagefull.onchange(() => {
+      this.isFullPage = pagefull.isFullPage(this.box as HTMLElement)
     })
   }
 
@@ -56,30 +67,37 @@ class VideoControls extends LitElement{
       this.muted = this.video.muted = !this.video.muted
     }
   }
-  handleFullPage() {
-
-  }
-  async handleFullscreen() {
-    try {
-      await screenfull.toggle(this.box as HTMLElement)
-    } catch (err) {
-      console.warn(err.message)
-    }
-  }
-  async handlePip() {
-    try {
-      // @ts-ignore
-      if (this.video !== document.pictureInPictureElement) {
-        // @ts-ignore
-        await this.video.requestPictureInPicture()
-      } else {
-        // @ts-ignore
-        await document.exitPictureInPicture()
+  // 网页全屏
+  async handleFullPage() {
+    if (this.box) {
+      try {
+        await pagefull.toggle(this.box)
+      } catch (err) {
+        console.warn(err.message)
       }
-    } catch (e) {
-      console.warn(e.message)
     }
   }
+  // 全屏
+  async handleFullscreen() {
+    if (this.box) {
+      try {
+        await screenfull.toggle(this.box as HTMLElement)
+      } catch (err) {
+        console.warn(err.message)
+      }
+    }
+  }
+  // 画中画
+  async handlePip() {
+    if (this.video) {
+      try {
+        await videopip.toggle(this.video as HTMLVideoElement)
+      } catch (err) {
+        console.warn(err.message)
+      }
+    }
+  }
+  // 字幕
   handleSubtitle() {}
 
   render() {
@@ -90,9 +108,9 @@ class VideoControls extends LitElement{
           <div class="time"></div>
           <div class="icons">
             <button class="mute" @click="${this.handleMute}">静音(${this.muted ? 'true' : 'false'})</button>
-            ${this.icons.fullPage ? html`<button class="full-page" @click="${this.handleFullPage}">网页全屏</button>` : ''}
+            ${this.icons.fullPage ? html`<button class="full-page" @click="${this.handleFullPage}">${this.isFullPage ? '退出' : ''}网页全屏</button>` : ''}
             <button class="full-screen" @click="${this.handleFullscreen}">${this.isFullscreen ? '退出' : ''}全屏</button>
-            ${this.icons.pip ? html`<button class="pip" @click="${this.handlePip}">画中画</button>` : ''}
+            ${this.icons.pip ? html`<button class="pip" @click="${this.handlePip}">${this.isPip ? '退出' : ''}画中画</button>` : ''}
             ${this.icons.subtitle ? html`<button class="subtitle" @click="${this.handleSubtitle}">字幕</button>` : ''}
           </div>
         </div>
