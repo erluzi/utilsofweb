@@ -27,6 +27,9 @@ class VideoControls extends LitElement{
   isPip: boolean = false
 
   @property()
+  subtitles: TextTrackList | Array<any> = []
+
+  @property()
   icons: Record<string, boolean> = {
     fullPage: this.hasAttribute('fullPage'),
     pip: this.hasAttribute('pip'),
@@ -41,6 +44,8 @@ class VideoControls extends LitElement{
     }
     if (this.video) {
       this.muted = this.video.muted
+      this.subtitles = this.video.textTracks
+      console.log('this.subtitles: ', this.subtitles)
       this.initEvents()
     }
   }
@@ -98,8 +103,31 @@ class VideoControls extends LitElement{
     }
   }
   // 字幕
-  handleSubtitle() {}
+  handleSubtitle(event: Event) {
+    // @ts-ignore
+    let value = event.currentTarget.value
+    let subtitles = Array.from(this.subtitles)
+    if (value === 'close') {
+      subtitles.forEach(st => st.mode = 'hidden')
+    } else {
+      for (let st of subtitles) {
+        if (st.language === value) {
+          st.mode = 'showing'
+        } else {
+          st.mode = 'hidden'
+        }
+      }
+    }
+  }
 
+  get t_subtitles() {
+    return html`
+      <select class="subtitle" name="subtitle" @change="${this.handleSubtitle}">
+        <option value="close">close</option>
+        ${Array.from(this.subtitles).map(st => html`<option .value="${st.language}">${st.language}</option>`)}
+      </select>
+    `
+  }
   render() {
     let dom = html`
       <div class="c-v-controls">
@@ -111,7 +139,7 @@ class VideoControls extends LitElement{
             ${this.icons.fullPage ? html`<button class="full-page" @click="${this.handleFullPage}">${this.isFullPage ? '退出' : ''}网页全屏</button>` : ''}
             <button class="full-screen" @click="${this.handleFullscreen}">${this.isFullscreen ? '退出' : ''}全屏</button>
             ${this.icons.pip ? html`<button class="pip" @click="${this.handlePip}">${this.isPip ? '退出' : ''}画中画</button>` : ''}
-            ${this.icons.subtitle ? html`<button class="subtitle" @click="${this.handleSubtitle}">字幕</button>` : ''}
+            ${this.icons.subtitle ? this.t_subtitles : ''}
           </div>
         </div>
       </div>
