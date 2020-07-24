@@ -10,7 +10,7 @@ interface Configs {
   header: Record<string, string>
 }
 
-function generateFetch(initApis: Apis = {}, initConfig: Configs, handler: Function): Function {
+function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Function): Function {
   let apis: Apis = initApis
   let initData = initConfig.data || {}
   let initHeader = initConfig.header || {}

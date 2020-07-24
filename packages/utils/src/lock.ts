@@ -1,3 +1,5 @@
+// 锁，只提供 锁 字符串
+
 class Lock {
   private _locked: Set<any>
   private readonly _fakePromise: object
