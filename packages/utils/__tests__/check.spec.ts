@@ -24,4 +24,23 @@ describe('utils/check', () => {
       expect(check.isEmail(email)).toBe(false)
     }
   })
+
+  it('should check mobile phone works', () => {
+    let mobilePhones = [
+      18800112233,
+      19912341234,
+      '13512345678',
+    ]
+    let notMobilePhones = [
+      1880000000,
+      12112345678,
+      '12112345678',
+    ]
+    for (let mobilePhone of mobilePhones) {
+      expect(check.isMobilePhone(mobilePhone)).toBe(true)
+    }
+    for (let mobilePhone of notMobilePhones) {
+      expect(check.isMobilePhone(mobilePhone)).toBe(false)
+    }
+  })
 })

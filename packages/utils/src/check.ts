@@ -8,9 +8,14 @@ function isEmail(val: string): boolean {
   return Regexs.email.test(val)
 }
 
+function isMobilePhone(val: string | number): boolean {
+  return Regexs.mobilePhone.test(String(val))
+}
+
 let check = {
   isNode,
   isEmail,
+  isMobilePhone
 }
 
 export {
