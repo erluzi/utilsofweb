@@ -160,6 +160,60 @@ function _clipboardUseTextArea() {
   return fakeElem
 }
 
+function getPolling() {
+  return {
+    times: 0, // 轮询次数
+    timer: null,
+    isInterrupt: false, // 是否被中断
+    polling (timeWait: number, timeAll: number, cb: Function): Promise<boolean> {
+      if (timeWait <= 0) return Promise.reject(Error('timeWait must be integer and bigger than 0'))
+      if (timeWait > timeAll) return Promise.reject(Error('times is too short'))
+      return new Promise((resolve, reject) => {
+        this.timer = setInterval(() => {
+          timeAll -= timeWait
+          ++this.times
+          cb()
+          if (timeAll <= 0) {
+            this.clear()
+            resolve(true)
+          } else if (this.isInterrupt) {
+            this.clear()
+            reject(Error('timer cleared by other process'))
+          }
+        }, timeWait)
+      })
+    },
+    /**
+     * 清除定时器，结束轮询任务
+     */
+    clear() {
+      clearInterval(this.timer)
+      this.timer = null
+    },
+    /**
+     * 重置轮询，重置后可执行其他轮询任务
+     */
+    reset() {
+      this.clear()
+      this.times = 0
+      this.isInterrupt = false
+      return this
+    },
+    /**
+     * 结束轮询，会执行最后一次回调
+     * @param maxTimes 最大轮询次数
+     */
+    stop (maxTimes: number) {
+      // clearInterval(this.timer)
+      // this.timer = null
+      // timer 的控制 放在 定时器内部
+      if (maxTimes === 0 || this.times >= maxTimes) {
+        this.isInterrupt = true
+      }
+    }
+  }
+}
+
 export {
   randomColor16,
   randomColorOpacity,
@@ -167,5 +221,6 @@ export {
   rgb2hsl,
   throttle,
   debounce,
-  clip2board
+  clip2board,
+  getPolling
 }

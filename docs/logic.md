@@ -17,6 +17,8 @@
   }
 ```
 
+- getPolling()
+
 - throttle(fn, duration)
 
 - debounce(fn, delay)

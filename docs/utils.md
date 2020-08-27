@@ -2,6 +2,7 @@
 - check
   - isNode(val)
   - isEmail(val)
+  - isMobilePhone(val)
   
 - numberFormat()
 ```javascript

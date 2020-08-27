@@ -1,6 +1,6 @@
 import {debounce} from '../src'
 
-describe('logic/logic', () => {
+describe('logic/logic debounce', () => {
   it('should debounce work right', () => {
     jest.useFakeTimers()
     const mockHandler = jest.fn(val => val)
