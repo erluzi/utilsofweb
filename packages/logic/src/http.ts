@@ -5,9 +5,15 @@ interface Apis {
   [index: string]: Array<any>
 }
 
+interface Loading {
+  start: Function,
+  stop: Function
+}
+
 interface Configs {
   data: Record<string, any>,
-  header: Record<string, string>
+  header: Record<string, string>,
+  loading?: Loading
 }
 
 function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Function): Function {
@@ -16,7 +22,7 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
   let initHeader = initConfig.header || {}
   let apiLock = new Lock()
 
-  function fetchData (apiName: string, data: object = {}, header: object = {}) {
+  function fetchData (apiName: string, data: object = {}, header: object = {}, opts = {mountElement: undefined}) {
     let [url, method, domain] = apis[apiName]
     if (!url) throw Error(`${apiName} is undefined`)
     const dataSend = Object.assign(initData, data)
@@ -39,6 +45,10 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
     }
 
     let fn = () => new Promise((resolve, reject) => {
+      // todo loading
+      if (opts && opts.mountElement !== undefined && initConfig.loading) {
+        initConfig.loading.start(opts.mountElement)
+      }
       fetch(domain ? domain + url : url, request).then(res => {
         if (res.ok) {
           return res.json()
@@ -57,6 +67,10 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
       }).catch(err => {
         reject(err)
       }).finally(() => {
+        // todo loading over
+        if (opts && opts.mountElement !== undefined && initConfig.loading) {
+          initConfig.loading.stop()
+        }
         setTimeout(apiLock.unlock.bind(apiLock), 500, channel)
       })
     })
