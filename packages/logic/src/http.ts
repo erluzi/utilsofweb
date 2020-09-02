@@ -45,7 +45,7 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
     }
 
     let fn = () => new Promise((resolve, reject) => {
-      // todo loading
+      // loading
       if (opts && opts.mountElement !== undefined && initConfig.loading) {
         initConfig.loading.start(opts.mountElement)
       }
@@ -67,7 +67,7 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
       }).catch(err => {
         reject(err)
       }).finally(() => {
-        // todo loading over
+        // loading over
         if (opts && opts.mountElement !== undefined && initConfig.loading) {
           initConfig.loading.stop()
         }
