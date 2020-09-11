@@ -30,7 +30,7 @@ function hex2rgb(val: string): string {
     let b = m & 0xff
     return `rgb(${r}, ${g}, ${b})`
   }else{
-    throw new Error(`argument ${val} is not a color`)
+    throw Error(`argument ${val} is not a color`)
   }
 }
 
@@ -68,7 +68,7 @@ function rgb2hsl(val: string): string {
     else s = d / (2 - max - min);
     return `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
   }else{
-    throw new Error(`argument ${val} is not a color`)
+    throw Error(`argument ${val} is not a color`)
   }
 }
 
