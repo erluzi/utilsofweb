@@ -21,6 +21,7 @@ $ npm i utilsofweb
 - build:all: 对 packages 下子项目 逐个打包
 - build:litcomp: 对 packages 下 litcomp(web components) 打包
 
+## dir: pr - some proposal that will not compile to dist
 
 # issue
 
