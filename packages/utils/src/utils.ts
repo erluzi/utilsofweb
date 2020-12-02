@@ -79,6 +79,7 @@ function detectIE(userAgent: string | undefined): number | boolean {
 /**
  * 解析URL
  * @param url
+ * @deprecated 使用 new URL(url) 代替
  */
 function parseURL(url: string): CustomUrl {
   // if (typeof url !== 'string') throw Error('params url mast be type: string')
