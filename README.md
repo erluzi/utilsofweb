@@ -26,3 +26,7 @@ $ npm i utilsofweb
 # issue
 
 - 不支持在 node 环境使用 (document is undefined)
+
+# TODO
+
+- 迁移出

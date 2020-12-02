@@ -20,7 +20,5 @@ expect(dateFormat(date, 'yyyy/MM/dd hh:mm:ss')).toBe('2020/10/13 11:22:33')
 
 - detectIE(userAgent)
 
-- parseURL(url)
-
 - class Lock
 

@@ -81,35 +81,34 @@ function detectIE(userAgent: string | undefined): number | boolean {
  * @param url
  * @deprecated 使用 new URL(url) 代替
  */
-function parseURL(url: string): CustomUrl {
-  // if (typeof url !== 'string') throw Error('params url mast be type: string')
-  let a = document.createElement('a')
-  a.href = url
-  return {
-    source: url,
-    protocol: a.protocol.replace(':', ''),
-    host: a.hostname,
-    port: a.port,
-    query: a.search,
-    params: (() => {
-      let params: {[index: string]: string} = {}
-      let seg = a.search.replace(/^\?/, '').split('&'), len = seg.length, p
-      for (let i = 0; i < len; i++) {
-        if (seg[i]) {
-          p = seg[i].split('=')
-          params[p[0]] = p[1]
-        }
-      }
-      return params
-    })(),
-    hash: a.hash.replace('#', ''),
-    path: a.pathname.replace(/^([^\/])/, '/$1')
-  }
-}
+// function parseURL(url: string): CustomUrl {
+//   // if (typeof url !== 'string') throw Error('params url mast be type: string')
+//   let a = document.createElement('a')
+//   a.href = url
+//   return {
+//     source: url,
+//     protocol: a.protocol.replace(':', ''),
+//     host: a.hostname,
+//     port: a.port,
+//     query: a.search,
+//     params: (() => {
+//       let params: {[index: string]: string} = {}
+//       let seg = a.search.replace(/^\?/, '').split('&'), len = seg.length, p
+//       for (let i = 0; i < len; i++) {
+//         if (seg[i]) {
+//           p = seg[i].split('=')
+//           params[p[0]] = p[1]
+//         }
+//       }
+//       return params
+//     })(),
+//     hash: a.hash.replace('#', ''),
+//     path: a.pathname.replace(/^([^\/])/, '/$1')
+//   }
+// }
 
 export {
   numberFormat,
   dateFormat,
   detectIE,
-  parseURL
 }
