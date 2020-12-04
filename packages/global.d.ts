@@ -5,4 +5,3 @@ interface Object {
   off(type: string, fn: Function): void;
   trigger(type: string, ...args: any[]): void;
 }
-
