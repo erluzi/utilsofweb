@@ -3,16 +3,16 @@ import {check} from '../../utils/src'
 export class Countdown {
   el: HTMLElement
   leftSecond: number
-  timer: any
+  timer: number
   constructor(el: HTMLElement, leftMs: number) {
     if(!check.isNode(el)) throw TypeError(`argument el => ${el} is not element`)
     this.el = el
     this.leftSecond =  Math.floor(leftMs / 1000)
-    this.timer = null
+    this.timer = -1
   }
   show(prefix = '倒计时') {
     this.handle(prefix);
-    this.timer = setInterval(() => this.handle(prefix), 1000)
+    this.timer = window.setInterval(() => this.handle(prefix), 1000)
   }
   handle(prefix: string){
     let d, h, m, s;
