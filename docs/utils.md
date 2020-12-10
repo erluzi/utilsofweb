@@ -1,4 +1,5 @@
 ## Utils
+
 - check
   - isNode(val)
   - isEmail(val)
@@ -21,4 +22,26 @@ expect(dateFormat(date, 'yyyy/MM/dd hh:mm:ss')).toBe('2020/10/13 11:22:33')
 - detectIE(userAgent)
 
 - class Lock
+
+- randomColor16()
+
+- randomColorOpacity()
+
+- hex2rgb()
+
+- rgb2hsl()
+
+- clip2board()
+```javascript
+  async function copy() {
+    await Logic.clip2board(copyText)
+    console.log(`clipboard success, text: ${copyText}`)
+  }
+```
+
+- getPolling()
+
+- throttle(fn, duration)
+
+- debounce(fn, delay)
 
