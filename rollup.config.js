@@ -22,12 +22,17 @@ export default {
       file: pkg.unpkg,
       format: 'iife',
       name: 'UtilsOfWeb', // the global which can be used in browser
-      sourcemap: true
+      sourcemap: true,
+      globals: {
+        qs: 'qs'
+      }
     },
   ],
+  // suppress the warning - (!) Unresolved dependencies
   external: [
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
+    'qs'
   ],
   plugins: [
     typescript({
