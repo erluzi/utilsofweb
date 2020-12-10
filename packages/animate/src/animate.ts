@@ -1,4 +1,4 @@
-import {hex2rgb} from '../../logic/src'
+import {hex2rgb} from '../../utils/src'
 
 interface AniOptions {
   target: HTMLElement,

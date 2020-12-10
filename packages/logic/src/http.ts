@@ -1,5 +1,5 @@
-import {Lock} from '../../utils/src'
 import qs from 'qs'
+import {Lock} from './Lock'
 
 interface Apis {
   [index: string]: Array<any>

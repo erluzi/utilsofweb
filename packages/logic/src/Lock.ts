@@ -1,4 +1,4 @@
-// 锁，只提供 锁 字符串
+// 锁，只提供 锁字符串
 
 class Lock {
   private _locked: Set<any>

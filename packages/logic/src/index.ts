@@ -5,3 +5,4 @@ export {DBManager}
 export {PageManager} from './PageManager'
 export {generateFetch} from './http'
 export {lazyImg} from './lazyImg'
+export {Lock} from './lock'
