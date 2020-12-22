@@ -35,7 +35,6 @@
     "url": "https://github.com/erluzi/utilsofweb/issues"
   },
   "homepage": "https://github.com/erluzi/utilsofweb#readme",
-  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-node-resolve": "^7.1.3",

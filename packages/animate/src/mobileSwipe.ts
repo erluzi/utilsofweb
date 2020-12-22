@@ -1,6 +1,6 @@
 import {$ as $el, $$, classie} from '../../dom/src'
 import {check} from '../../utils/src'
-import {throttle} from '../../logic/src'
+import {throttle} from '../../utils/src'
 
 interface Swipe {
   moveLeft(): void,

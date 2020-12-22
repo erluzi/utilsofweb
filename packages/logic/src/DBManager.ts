@@ -1,16 +1,18 @@
-function promisify(request: IDBRequest) : Promise<any> {
-  return new Promise((resolve, reject) => {
-    request.onsuccess = resolve
-    request.onerror = reject
-  })
-}
+// import {AsyncParallelHook} from 'tapable'
+// tapable 库编译到dist后 报错，这里不使用，而是自己做简单实现
 
-class DBManager {
+import {AsyncHook, promisify} from './hleper'
+
+export class DBManager {
   db: IDBDatabase | null
   version: number
+  hooks: Record<any, any>
   constructor () {
     this.db = null
     this.version = 1
+    this.hooks = {
+      createStore: new AsyncHook()
+    }
   }
 
   async open (database: string, version?: number) : Promise<IDBDatabase> {
@@ -20,10 +22,18 @@ class DBManager {
     request.onupgradeneeded = () => {
       console.log('onupgradeneeded')
       // The database did not previously exist, so create object stores and indexes.
+      this.createStore(request.result)
     }
     let event = await promisify(request)
-    this.db = event.result
-    return event.result
+    this.db = event.target.result
+    return event.target.result
+  }
+
+  //执行暴露在外的钩子(类似生命周期)
+  createStore (db: IDBDatabase){
+    this.hooks.createStore.promise(db).then((store: any) => {
+      console.log('数据库表已建立', store)
+    })
   }
 
   async getSetObjectStore (storeName: string, optionalParameters?: IDBObjectStoreParameters) : Promise<IDBObjectStore> {
@@ -70,7 +80,7 @@ class DBManager {
     let request = index.get(val)
 
     let event = await promisify(request)
-    return event.result
+    return event.target.result
   }
 
   async getAll (storeName: string, key: string, query?: IDBValidKey | IDBKeyRange | null) {
@@ -78,15 +88,31 @@ class DBManager {
 
     let index = store.index(key)
     let request = index.openCursor(query)
-
-    let event = await promisify(request)
     let result: any[] = []
-    let cursor = event.result
-    if (cursor) {
-      result.push(cursor.value)
-      cursor.continue()
-    }
-    return result
+
+    // let request = store.getAll(query)
+
+    // todo why this will get result wrong
+    // let event = await promisify(request)
+    // let cursor = event.target.result
+    // if (cursor) {
+    //   result.push(cursor.value)
+    //   cursor.continue()
+    // }
+    return new Promise((resolve, reject) => {
+      request.onsuccess = function() {
+        let cursor = request.result
+        if (cursor) {
+          result.push(cursor.value)
+          cursor.continue()
+        } else {
+          resolve(result)
+        }
+      }
+      request.onerror = e => {
+        reject(e)
+      }
+    })
   }
 
   // 根据主键删除
@@ -106,5 +132,3 @@ class DBManager {
     await promisify(request)
   }
 }
-
-export default DBManager

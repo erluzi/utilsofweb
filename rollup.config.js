@@ -24,7 +24,8 @@ export default {
       name: 'UtilsOfWeb', // the global which can be used in browser
       sourcemap: true,
       globals: {
-        qs: 'qs'
+        qs: 'qs',
+        tapable: 'tapable'
       }
     },
   ],
@@ -32,7 +33,8 @@ export default {
   external: [
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
-    'qs'
+    'qs',
+    'tapable'
   ],
   plugins: [
     typescript({

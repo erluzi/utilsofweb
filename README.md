@@ -23,6 +23,8 @@ $ npm i utilsofweb
 
 ## dir: pr - some proposal that will not compile to dist
 
+## external third libs by install [@types](https://www.typescriptlang.org/dt/search?search=qs)
+
 # issue
 
 - 不支持在 node 环境使用 (document is undefined)
