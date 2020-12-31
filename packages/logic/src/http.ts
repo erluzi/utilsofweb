@@ -1,5 +1,5 @@
 import qs from 'qs'
-import {Lock} from './Lock'
+import {Lock} from './hleper/Lock'
 
 interface Apis {
   [index: string]: Array<any>

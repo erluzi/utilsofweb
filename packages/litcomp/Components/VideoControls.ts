@@ -1,6 +1,7 @@
 import {LitElement, html, customElement, property} from 'lit-element'
 // import { classMap } from 'lit-html/directives/class-map'
-import {screenfull, pagefull, videopip} from '../shared/utils'
+import {pagefull, videopip} from '../shared/utils'
+import {screenfull} from '../../logic/src'
 
 @customElement('c-v-controls')
 class VideoControls extends LitElement{

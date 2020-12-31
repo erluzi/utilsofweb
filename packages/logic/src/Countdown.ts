@@ -1,5 +1,6 @@
 import {check} from '../../utils/src'
 
+// won't compile
 export class Countdown {
   el: HTMLElement
   leftSecond: number

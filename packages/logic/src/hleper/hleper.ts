@@ -1,7 +1,3 @@
-function sleep(t: number) {
-  return new Promise(resolve => setTimeout(resolve, t))
-}
-
 class AsyncHook {
   hooks: Function | null
   pluginName: string
@@ -32,7 +28,6 @@ function promisify(request: IDBRequest) : Promise<any> {
 }
 
 export {
-  sleep,
   promisify,
   AsyncHook
 }

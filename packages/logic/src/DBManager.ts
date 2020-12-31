@@ -1,7 +1,7 @@
 // import {AsyncParallelHook} from 'tapable'
 // tapable 库编译到dist后 报错，这里不使用，而是自己做简单实现
 
-import {AsyncHook, promisify} from './hleper'
+import {AsyncHook, promisify} from './hleper/hleper'
 
 export class DBManager {
   db: IDBDatabase | null
