@@ -1,4 +1,5 @@
 ## Dom
+
 - classie
   - hasClass(el, className)
   - addClass(el, className)

@@ -1,5 +1,7 @@
 # Animate
+
 - Ani
+
 ```javascript
   async function animate() {
     Animate.Ani.initProps('width', 'height')
@@ -15,6 +17,7 @@
 ```
 
 - MobileSwipe
+
 ```javascript
 let mobileSwipe = new Animate.MobileSwipe({times: 5000, auto: false})
 ```
@@ -24,11 +27,13 @@ let mobileSwipe = new Animate.MobileSwipe({times: 5000, auto: false})
 
 
 - TabMove
+
 ```javascript
 new Animate.TabMove({box: '.tab1'});
 ```
 
 - Popup
+
 ```javascript
 let popup = new Animate.Popup({clear: false})
 ```

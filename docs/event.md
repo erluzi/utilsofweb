@@ -1,5 +1,7 @@
 ## Event
+
 - eventMixin
+
 ```javascript
 class TestObj{}
 eventMixin(TestObj)

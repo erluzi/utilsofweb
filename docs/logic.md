@@ -3,6 +3,7 @@
 - DBManager
 
 - PageManager
+
 ```javascript
 let pm = new Logic.PageManager()
 let events = {
@@ -18,6 +19,7 @@ pm.setPages(events).setDefaultPage('home').init()
 ```
 
 - http
+
 ```javascript
 import {Logic} from 'utilsofweb'
 import apis from './apis.js'
@@ -38,19 +40,21 @@ cFetch('getSensitiveWords', {page: 1}).then(res => {
 ```
 
 - lazyImg
+
 > 图片准备
-```
-assets
-  loading.png (作为懒加载图片背景)
-  tm.png (作为懒加载图片src)
-```
+
+- assets
+  - loading.png (作为懒加载图片背景)
+  - tm.png (作为懒加载图片src)
 
 > html
+
 ```html
 <img class="lazy" src="../assets/tm.png" :data-src="goods.iconUrl" alt="商品图片">
 ```
 
 > js
+
 ```javascript
 import {Logic} from 'utilsofweb'
 Logic.lazyImg.init()
@@ -82,4 +86,9 @@ img.lazy {
 .img-opacity {
   animation: imgOpacity 300ms linear 0ms 1 normal both;
 }
+```
+
+- screenfull
+```javascript
+await screenfull.toggle(fullElement)
 ```
