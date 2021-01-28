@@ -45,6 +45,7 @@ const fnMap = [
 
 type MapKeys = Record<string, string>
 
+// get key map: fn = {requestFullscreen: 'webkitRequestFullscreen', ...}
 const fn: MapKeys = (() => {
   let re: MapKeys = {}
   for (let m of fnMap) {

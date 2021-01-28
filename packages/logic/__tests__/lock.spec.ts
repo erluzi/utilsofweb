@@ -1,4 +1,4 @@
-import {Lock} from '../src'
+import {Lock} from '../src/hleper/Lock'
 
 describe('utils/Lock', () => {
   it('should Lock works', async () => {

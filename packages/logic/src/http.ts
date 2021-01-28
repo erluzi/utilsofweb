@@ -22,19 +22,22 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
   let initHeader = initConfig.header || {}
   let apiLock = new Lock()
 
-  function fetchData (apiName: string, data: object = {}, header: object = {}, opts = {mountElement: undefined}) {
+  function fetchData (apiName: string, data: object = {}, header: object = {}, opts = {mountElement: undefined, timeout: 0}) {
     let [url, method, domain] = apis[apiName]
     if (!url) throw Error(`${apiName} is undefined`)
     const dataSend = Object.assign(initData, data)
     const request: RequestInit = {
-      body: qs.stringify(dataSend),
+      body: JSON.stringify(dataSend),
       method,
       mode: 'cors',
-      headers: Object.assign({
-        'Content-Type': 'application/json'
-      }, initHeader, header)
+      headers: {
+        'Content-Type': 'application/json',
+        ...initHeader,
+        ...header
+      }
     }
     const channel = `${url}_${JSON.stringify(dataSend)}`
+
     // @ts-ignore
     if (request.headers['Content-Type'] === 'multipart/form-data') {
       let formData = new FormData()
@@ -43,36 +46,61 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
       }
       request.body = formData
     }
+    // @ts-ignore
+    else if (request.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+      request.body = qs.stringify(dataSend)
+    }
 
     let fn = () => new Promise((resolve, reject) => {
       // loading
       if (opts && opts.mountElement !== undefined && initConfig.loading) {
         initConfig.loading.start(opts.mountElement)
       }
-      fetch(domain ? domain + url : url, request).then(res => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          throw Error('net work error')
-          // reject(Error('net work error'))
-        }
-      }).then(res => {
-        if (res.code === 200) {
-          resolve(res)
-        } else {
-          handler && handler(res)
-          throw Error(res.msg || res.message)
-          // reject(Error(res.msg || res.message))
-        }
-      }).catch(err => {
-        reject(err)
-      }).finally(() => {
-        // loading over
-        if (opts && opts.mountElement !== undefined && initConfig.loading) {
-          initConfig.loading.stop()
-        }
-        setTimeout(apiLock.unlock.bind(apiLock), 500, channel)
-      })
+      // abort fetch
+      let timerId: any
+      if (opts && opts.timeout > 0) {
+        let controller = new AbortController()
+        request.signal = controller.signal
+        timerId = setTimeout(() => controller.abort(), opts.timeout)
+      }
+      fetch(domain ? domain + url : url, request)
+        .then(res => {
+          if (res.ok) {
+            clearTimeout(timerId)
+            return res.json()
+          } else {
+            // HTTP 状态码是 404 或 500
+            handler && handler(null, {code: 500, message: 'network error'})
+            reject('network error')
+          }
+        })
+        .then(res => {
+          if (res.code === 200) {
+            resolve(res)
+          } else {
+            if (handler) {
+              if (handler(res)) {
+                resolve(res)
+              } else {
+                reject(res)
+              }
+            } else {
+              reject(res)
+            }
+          }
+        })
+        .catch(() => {
+          // 网络故障 或 请求被阻止
+          handler && handler(null, {code: 0, message: 'network error !'})
+          reject('network error !')
+        })
+        .finally(() => {
+          // loading over
+          if (opts && opts.mountElement !== undefined && initConfig.loading) {
+            initConfig.loading.stop()
+          }
+          setTimeout(apiLock.unlock.bind(apiLock), 300, channel)
+        })
     })
     return apiLock.lock(channel, fn)
   }
