@@ -11,21 +11,21 @@ interface Loading {
 }
 
 interface Configs {
-  data: Record<string, any>,
+  getData: () => Record<string, any>,
   header: Record<string, string>,
   loading?: Loading
 }
 
 function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Function): Function {
   let apis: Apis = initApis
-  let initData = initConfig.data || {}
+  // let initData = initConfig.getData() || {}
   let initHeader = initConfig.header || {}
   let apiLock = new Lock()
 
   function fetchData (apiName: string, data: object = {}, header: object = {}, opts = {mountElement: undefined, timeout: 0}) {
     let [url, method, domain] = apis[apiName]
     if (!url) throw Error(`${apiName} is undefined`)
-    const dataSend = Object.assign(initData, data)
+    const dataSend = {...initConfig.getData(), ...data}
     const request: RequestInit = {
       body: JSON.stringify(dataSend),
       method,
@@ -69,7 +69,7 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
             clearTimeout(timerId)
             return res.json()
           } else {
-            // HTTP 状态码是 404 或 500
+            // HTTP 状态码是 404 或 500 ...
             handler && handler(null, {code: 500, message: 'network error'})
             reject('network error')
           }
@@ -110,7 +110,7 @@ function generateFetch(initApis: Apis = {}, initConfig: Configs, handler?: Funct
   }
 
   fetchData.updateInitConfig = (updatedConfig: Configs) => {
-    initData = updatedConfig.data || {}
+    // initData = updatedConfig.data || {}
     initHeader = updatedConfig.header || {}
   }
 

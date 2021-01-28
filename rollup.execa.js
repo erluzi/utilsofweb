@@ -1,6 +1,6 @@
 import path from 'path'
 import typescript from 'rollup-plugin-typescript2'
-// import {terser} from 'rollup-plugin-terser'
+import {terser} from 'rollup-plugin-terser'
 
 const packagesDir = path.resolve(__dirname, 'packages')
 const packageDir = path.resolve(packagesDir, process.env.TARGET)
@@ -9,6 +9,7 @@ const resolve = p => path.resolve(packageDir, p)
 const pkg = require(resolve(`package.json`))
 const ShouldGenerateSourceMap = false
 
+// 逐个打包
 export default {
   input: resolve('src/index.ts'),
   output: [
@@ -46,6 +47,6 @@ export default {
         exclude: ['**/__tests__', 'test-dts']
       }
     }),
-    // terser() // minifies generated bundles
+    terser() // minifies generated bundles
   ]
 }
